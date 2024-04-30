@@ -3,6 +3,7 @@ const app = express();
 const dotEnv = require('dotenv');
 dotEnv.config();
 const mongoose = require('mongoose');
+const cors = require('cors')
 const userRoute = require('./route/userRoute.js')
 
 //Declaring port number of the server
@@ -25,6 +26,11 @@ function mongoDBConnection () {
 }
 //Calling the function to connect with mongodb
 mongoDBConnection();
+
+//Middleware
+app.use(cors()) // Enable cors for all origin.
+app.use(express.json());//parse incomming payload.
+app.use(express.urlencoded({extended:true}));
 
 //Checking the server is working or not with the help of the get method.
 app.get('/',(req,res) => {
