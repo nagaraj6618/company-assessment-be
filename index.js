@@ -5,6 +5,7 @@ dotEnv.config();
 const mongoose = require('mongoose');
 const cors = require('cors')
 const userRoute = require('./route/userRoute.js')
+const postRoute = require('./route/getPost.js');
 const cookie = require('cookie-parser');
 //Declaring port number of the server
 const PORT = process.env.PORT;
@@ -38,5 +39,7 @@ app.get('/',(req,res) => {
    res.status(200).json({message:"Server is running"});
 })
 
-app.use('/api/v1/auth',userRoute)
+app.use('/api/v1/auth',userRoute);
+app.use('/api/v1/post',postRoute);
+
 app.listen(PORT,() => console.log(`Server Running at http://localhost:${PORT}/`));
