@@ -2,6 +2,36 @@ const userSchema = require('../model/userModel.js');
 const bcrypt = require('bcryptjs');
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
+const transporter = nodemailer.createTransport({
+   service:'Gmail',
+   auth: {
+      user: 'nagaraj516700@gmail.com', 
+      pass: 'bgxm fbbf gofe rlbp'
+   }
+})
+function mailSender(email,name){
+   let mailOptions = {
+      from: 'Company-XYZ <nagaraj516700@gmail.com>', 
+      to: email, 
+      subject: "Signup Successful", 
+      
+    html: `
+        <h2>Dear ${name},</h2>
+        <h4><strong>Welcome Mr. ${name},</strong></h4>
+        <p>Your account has been successfully created.</p>
+        <p>Thank you for joining us!</p>
+        <p>Best regards,<br>Company-XYZ</p>
+    `
+  };
+   transporter.sendMail(mailOptions, async function(error, info){
+      if (error) {
+          console.error('Error sending email:', error);
+      } else {
+          console.log('Email sent:', info.response);
+      }
+   })
+}
 
 async function emailValidationChecker (email){
    try{
@@ -25,9 +55,12 @@ async function registerUser (req,res) {
       const salt = bcrypt.genSaltSync(10);
       const hashPassword = bcrypt.hashSync(req.body.password,salt);
       userData.password = hashPassword;
+      userData.createdAt = new Date(Date.now());
       const newUser = new userSchema(userData)
       console.log(newUser);
       await newUser.save();
+
+      mailSender(newUser.email,newUser.name);
       res.status(200).json({message:"Register Successfull",data:newUser});
    
 
