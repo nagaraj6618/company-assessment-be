@@ -1,6 +1,7 @@
 const userSchema = require('../model/userModel.js');
 const bcrypt = require('bcryptjs');
 const axios = require('axios');
+const jwt = require('jsonwebtoken');
 
 async function emailValidationChecker (email){
    try{
@@ -11,9 +12,7 @@ async function emailValidationChecker (email){
    }
    catch(error){
       return false;
-   }
-
-   
+   }   
 }
 async function registerUser (req,res) {
    // const data = await userSchema.find();
@@ -45,7 +44,32 @@ async function registerUser (req,res) {
 }
 
 async function loginUser (req,res) {
-   res.status(200).json({message:"Login Method."});
+   const userByName = await userSchema.findOne({username:req.body.username});
+   const userByEmail = await userSchema.findOne({email:req.body.email}); 
+   let user = userByEmail || userByName;
+   if(!user){
+      return res.status(400).json({message:"Account doesn't Exist"})   
+   }
+   
+   const correctPassword = await bcrypt.compareSync(req.body.password,user.password);
+   if(!correctPassword){
+      return res.status(400).json({message:"Invalid Password."});
+   }
+   const token = jwt.sign(
+      {
+         id:user._id,
+         role:user.role,
+      },
+      process.env.JWT_SECRET_KEY,
+      {
+         expiresIn:"10m"
+      }
+   );
+   res.cookie('accesstoken',token,{
+      expires: new Date(Date.now()+600000)
+   })
+   res.status(200).json({message:"Login Success",data:token});
+   
 }
 
 module.exports = {registerUser,loginUser};

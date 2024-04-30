@@ -5,7 +5,7 @@ dotEnv.config();
 const mongoose = require('mongoose');
 const cors = require('cors')
 const userRoute = require('./route/userRoute.js')
-
+const cookie = require('cookie-parser');
 //Declaring port number of the server
 const PORT = process.env.PORT;
 
@@ -31,6 +31,7 @@ mongoDBConnection();
 app.use(cors()) // Enable cors for all origin.
 app.use(express.json());//parse incomming payload.
 app.use(express.urlencoded({extended:true}));
+app.use(cookie());
 
 //Checking the server is working or not with the help of the get method.
 app.get('/',(req,res) => {
