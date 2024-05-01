@@ -77,9 +77,14 @@ async function registerUser (req,res) {
 }
 
 async function loginUser (req,res) {
-   const userByName = await userSchema.findOne({username:req.body.username});
-   const userByEmail = await userSchema.findOne({email:req.body.email}); 
+   console.log(req.body)
+   const userByName = await userSchema.findOne({username:req.body.emailorusername});
+   const userByEmail = await userSchema.findOne({email:req.body.emailorusername}); 
    let user = userByEmail || userByName;
+   const userData = {
+      userName : user.username,
+      name: user.name,
+   }
    if(!user){
       return res.status(400).json({message:"Account doesn't Exist"})   
    }
@@ -98,10 +103,13 @@ async function loginUser (req,res) {
          expiresIn:"10m"
       }
    );
+   
    res.cookie('accesstoken',token,{
-      expires: new Date(Date.now()+600000)
-   })
-   res.status(200).json({message:"Login Success",data:token});
+      
+         expires: new Date(Date.now()+600000),
+         httpOnly:true,
+      
+   }).status(200).json({message:"Login Success",data:userData,token:token});
    
 }
 

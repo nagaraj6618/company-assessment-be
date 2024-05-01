@@ -7,8 +7,11 @@ const cors = require('cors')
 const userRoute = require('./route/userRoute.js')
 const postRoute = require('./route/getPost.js');
 const cookie = require('cookie-parser');
+const bodyParser = require('body-parser');
+
 //Declaring port number of the server
 const PORT = process.env.PORT;
+
 
 //Making connection with Mongodb 
 function mongoDBConnection () {
@@ -29,14 +32,18 @@ function mongoDBConnection () {
 mongoDBConnection();
 
 //Middleware
-app.use(cors()) // Enable cors for all origin.
+app.use(cors({ origin: true, credentials: true })); // Enable cors for all origin.
+app.use(cookie());   
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());//parse incomming payload.
 app.use(express.urlencoded({extended:true}));
-app.use(cookie());
+
 
 //Checking the server is working or not with the help of the get method.
 app.get('/',(req,res) => {
    res.status(200).json({message:"Server is running"});
+   
 })
 
 app.use('/api/v1/auth',userRoute);
