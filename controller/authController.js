@@ -108,6 +108,7 @@ async function loginUser (req,res) {
       
          expires: new Date(Date.now()+600000),
          httpOnly:true,
+         sameSite:false,
       
    }).status(200).json({message:"Login Success",data:userData,token:token});
    
