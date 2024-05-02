@@ -105,11 +105,11 @@ async function loginUser (req,res) {
    );
    
    res.cookie('accesstoken',token,{
-      
-         expires: new Date(Date.now()+600000),
-         httpOnly:true,
-         sameSite:'None',
-         secure:true,
+      httpOnly: true,
+      secure: true,
+      sameSite: 'None',
+      expires: new Date(Date.now()+600000),
+      partitionKey:'None'
       
    }).status(200).json({message:"Login Success",data:userData,token:token});
 
