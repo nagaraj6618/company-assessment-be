@@ -113,6 +113,7 @@ async function loginUser (req,res) {
       
    }).status(200).json({message:"Login Success",data:userData,token:token});
    
+   
 }
 
 module.exports = {registerUser,loginUser};
