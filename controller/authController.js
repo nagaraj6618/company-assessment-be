@@ -109,7 +109,7 @@ async function loginUser (req,res) {
       secure: true,
       sameSite: 'None',
       expires: new Date(Date.now()+600000),
-      partitionKey:'None'
+      partitioned:'None'
       
    }).status(200).json({message:"Login Success",data:userData,token:token});
 
