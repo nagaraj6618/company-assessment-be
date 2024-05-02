@@ -107,9 +107,9 @@ async function loginUser (req,res) {
    res.cookie('accesstoken',token,{
       
          expires: new Date(Date.now()+600000),
-         path:'/',
-         domain:'.vercel.app'
-         
+         httpOnly:true,
+         sameSite:'None',
+         path:'/'
       
    }).status(200).json({message:"Login Success",data:userData,token:token});
 
