@@ -109,6 +109,7 @@ async function loginUser (req,res) {
          expires: new Date(Date.now()+600000),
          httpOnly:true,
          sameSite:true,
+         domain:'company-assessment.vercel.app'
       
    }).status(200).json({message:"Login Success",data:userData,token:token});
    
