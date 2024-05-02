@@ -108,7 +108,7 @@ async function loginUser (req,res) {
       
          expires: new Date(Date.now()+600000),
          httpOnly:true,
-         sameSite:false,
+         sameSite:'None',
          
          secure:true,
       
