@@ -6,12 +6,17 @@ const mongoose = require('mongoose');
 const cors = require('cors')
 const userRoute = require('./route/userRoute.js')
 const postRoute = require('./route/getPost.js');
-const cookie = require('cookie-parser');
+const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
 //Declaring port number of the server
 const PORT = process.env.PORT;
 
+//Middleware
+app.use(express.json());//parse incomming payload.
+app.use(cors({ origin: true, credentials: true })); // Enable cors for all origin.
+app.use(cookieParser());   
+app.use(bodyParser.json());
 
 //Making connection with Mongodb 
 function mongoDBConnection () {
@@ -31,13 +36,7 @@ function mongoDBConnection () {
 //Calling the function to connect with mongodb
 mongoDBConnection();
 
-//Middleware
-app.use(cors({ origin: true, credentials: true })); // Enable cors for all origin.
-app.use(cookie());   
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.json());//parse incomming payload.
-app.use(express.urlencoded({extended:true}));
+
 
 
 //Checking the server is working or not with the help of the get method.
