@@ -38,6 +38,7 @@ async function emailValidationChecker (email){
    const key = process.env.EMAIL_VALIDATE_API_KEY;
    const response = await axios.get(`https://emailvalidation.abstractapi.com/v1/?api_key=${key}&email=${email}`);
    console.log(response.data.deliverability)
+   console.log(response.data.deliverability == "DELIVERABLE")
    return response.data.deliverability == "DELIVERABLE"
    }
    catch(error){
@@ -47,8 +48,11 @@ async function emailValidationChecker (email){
 async function registerUser (req,res) {
    // const data = await userSchema.find();
    try{
+      console.log(req.body)
       const isValid = await emailValidationChecker(req.body.email);
+      console.log("isvalid",isValid)
       if(!isValid){
+         console.log("isvalid",isValid)
          return res.status(400).json({message:"Email is not valid"});
       }
       const userData = req.body;
