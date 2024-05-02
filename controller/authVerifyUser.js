@@ -28,4 +28,4 @@ const verifyUser = (req,res,next) => {
        res.status(401).json({  message: "Not Authenticated" })
    }
 }
-module.exports = {verifyUser};
+module.exports = {verifyUser,verifyToken};
