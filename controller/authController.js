@@ -81,14 +81,16 @@ async function loginUser (req,res) {
    const userByName = await userSchema.findOne({username:req.body.emailorusername});
    const userByEmail = await userSchema.findOne({email:req.body.emailorusername}); 
    let user = userByEmail || userByName;
+   console.log(user)
+   
+   if(!user){
+      console.log("Accound doesn't exist");
+      return res.status(400).json({message:"Account doesn't Exist"})   
+   }
    const userData = {
       userName : user.username,
       name: user.name,
    }
-   if(!user){
-      return res.status(400).json({message:"Account doesn't Exist"})   
-   }
-   
    const correctPassword = await bcrypt.compareSync(req.body.password,user.password);
    if(!correctPassword){
       return res.status(400).json({message:"Invalid Password."});
