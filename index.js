@@ -44,6 +44,10 @@ app.get('/',(req,res) => {
    res.status(200).json({message:"Server is running"});
    
 })
+app.get('/image',(req,res) => {
+   console.log(`${__dirname}/assets/avatar.jpeg`)
+   res.status(200).sendFile(`${__dirname}/assets/avatar.jpeg`)
+})
 
 app.use('/api/v1/auth',userRoute);
 app.use('/api/v1/post',postRoute);
